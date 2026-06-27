@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT - Sınırları Zorla</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        riot: '#FF4655',
+                        'riot-dark': '#d43744',
+                        dark1: '#0F1923',
+                        dark2: '#11141A',
+                        dark3: '#1F2326',
+                        offwhite: '#ECE8E1'
+                    },
+                    fontFamily: {
+                        teko: ['Teko', 'sans-serif'],
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS for Shapes and Effects -->
+    <style>
+        body {
+            background-color: #0F1923;
+            color: #ECE8E1;
+            overflow-x: hidden;
+        }
+        
+        /* Slanted Buttons & Elements */
+        .slanted {
+            clip-path: polygon(15px 0, 100% 0, calc(100% - 15px) 100%, 0 100%);
+        }
+        .slanted-reverse {
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 100%, 15px 100%);
+        }
+
+        /* Neon Glow Effects */
+        .glow-red {
+            box-shadow: 0 0 15px rgba(255, 70, 85, 0.5);
+        }
+        .hover-glow-red:hover {
+            box-shadow: 0 0 25px rgba(255, 70, 85, 0.8);
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(31, 35, 38, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Background Grid Pattern */
+        .bg-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0F1923; }
+        ::-webkit-scrollbar-thumb { background: #FF4655; }
+        ::-webkit-scrollbar-thumb:hover { background: #d43744; }
+
+        /* Ability Icon Outline */
+        .ability-icon {
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            transition: all 0.3s ease;
+        }
+        .ability-icon:hover, .ability-icon.active {
+            background-color: #FF4655;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="font-jakarta antialiased selection:bg-riot selection:text-white">
+
+    <!-- Navbar -->
+    <header class="fixed w-full z-50 glass-panel border-b-0 border-white/10 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <svg class="w-10 h-10 text-riot fill-current" viewBox="0 0 100 100">
+                        <path d="M99.25 48.66V10.28c0-.59-.75-.86-1.12-.39l-41.92 52.4a.627.627 0 00.49 1.02h30.29c.82 0 1.59-.37 2.1-1.01l10.16-13.64zM11.19 10.28L.81 21.03c-.45.47-.71 1.11-.71 1.77v35.34c0 .41.43.68.8.49L52.54 32.2c.4-.2.43-.77.06-1.02L12.31 9.87c-.32-.23-.74-.23-1.12.41z"/>
+                    </svg>
+                    <span class="font-teko text-3xl font-bold tracking-widest mt-1">VALORANT</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#hero" class="text-offwhite hover:text-riot font-bold tracking-wider text-sm transition-colors uppercase">Ana Sayfa</a>
+                    <a href="#agents" class="text-offwhite hover:text-riot font-bold tracking-wider text-sm transition-colors uppercase">Ajanlar</a>
+                    <a href="#maps" class="text-offwhite hover:text-riot font-bold tracking-wider text-sm transition-colors uppercase">Haritalar</a>
+                    <a href="#arsenal" class="text-offwhite hover:text-riot font-bold tracking-wider text-sm transition-colors uppercase">Silahlar</a>
+                </nav>
+
+                <!-- CTA Button -->
+                <div class="hidden md:block">
+                    <a href="#" class="slanted bg-riot text-dark1 font-teko font-bold text-xl px-8 py-3 hover:bg-white transition-all duration-300 inline-block uppercase tracking-wide">
+                        Hemen Oyna
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-offwhite hover:text-riot focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-dark2 border-t border-white/10">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#hero" class="block px-3 py-2 text-base font-bold text-offwhite hover:text-riot hover:bg-dark3 rounded uppercase">Ana Sayfa</a>
+                <a href="#agents" class="block px-3 py-2 text-base font-bold text-offwhite hover:text-riot hover:bg-dark3 rounded uppercase">Ajanlar</a>
+                <a href="#maps" class="block px-3 py-2 text-base font-bold text-offwhite hover:text-riot hover:bg-dark3 rounded uppercase">Haritalar</a>
+                <a href="#arsenal" class="block px-3 py-2 text-base font-bold text-offwhite hover:text-riot hover:bg-dark3 rounded uppercase">Silahlar</a>
+                <a href="#" class="block px-3 py-2 text-base font-bold text-riot mt-4 border border-riot text-center rounded uppercase">Hemen Oyna</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center pt-20 bg-grid overflow-hidden">
+        <!-- Abstract Background Shapes -->
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-riot/5 transform skew-x-[-20deg] origin-top-right"></div>
+        <div class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-dark1 to-transparent z-10"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Left Content -->
+                <div class="space-y-6 text-center lg:text-left">
+                    <h2 class="font-teko text-2xl text-riot tracking-[0.2em] uppercase">5'e 5 Taktiksel Nişancı</h2>
+                    <h1 class="font-teko text-7xl md:text-9xl font-bold leading-none uppercase">Sınırları <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-riot to-white">Zorla</span></h1>
+                    <p class="text-lg md:text-xl text-gray-400 max-w-xl mx-auto lg:mx-0 font-medium">
+                        Stilini ve deneyimini konuştur. Seçkin ajanlarla küresel, rekabetçi sahnede yerini al. Silah atışından daha fazlası; zeka ve taktik.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start pt-4">
+                        <a href="#" class="slanted bg-riot text-dark1 font-teko font-bold text-2xl px-10 py-4 hover:bg-white transition-all duration-300 flex items-center justify-center gap-2">
+                            <span>ÜCRETSİZ OYNA</span>
+                            <i class="fas fa-arrow-right text-sm"></i>
+                        </a>
+                        <a href="#" class="slanted border-2 border-white/20 hover:border-riot text-offwhite font-teko font-bold text-2xl px-10 py-4 glass-panel hover:bg-riot/10 transition-all duration-300 flex items-center justify-center gap-2">
+                            <i class="fas fa-play text-sm"></i>
+                            <span>SİNEMATİKLERİ İZLE</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Hero Image (Jett) -->
+                <div class="relative hidden lg:block group">
+                    <div class="absolute -inset-4 bg-riot rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition duration-500"></div>
+                    <img src="https://media.valorant-api.com/agents/add6443a-41bd-e414-f6ad-e58d267f4e95/fullportrait.png" alt="Valorant Jett" class="relative z-10 w-full max-w-[600px] transform group-hover:scale-105 transition duration-500 drop-shadow-[0_0_15px_rgba(255,70,85,0.3)]">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Agents Showcase -->
+    <section id="agents" class="py-24 relative bg-dark2 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-teko text-6xl font-bold uppercase tracking-wider">Ajanlarını Tanı</h2>
+                <div class="w-24 h-1 bg-riot mx-auto mt-4 slanted"></div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-12 bg-dark1/50 rounded-2xl border border-white/10 overflow-hidden">
+                
+                <!-- Agent List (Sidebar) -->
+                <div class="w-full lg:w-1/4 bg-dark3/80 p-6 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-x-hidden glass-panel" id="agent-list">
+                    <!-- JS will populate this -->
+                </div>
+
+                <!-- Agent Display Area -->
+                <div class="w-full lg:w-3/4 p-8 lg:p-12 relative min-h-[500px] flex flex-col justify-between">
+                    
+                    <!-- Background Role Watermark -->
+                    <div id="agent-bg-text" class="absolute right-0 bottom-0 font-teko text-[12rem] md:text-[20rem] font-bold text-white/[0.02] leading-none pointer-events-none select-none overflow-hidden">DUELIST</div>
+
+                    <div class="flex flex-col md:flex-row gap-8 relative z-10">
+                        <!-- Info -->
+                        <div class="w-full md:w-1/2 space-y-6">
+                            <div class="flex items-center gap-3">
+                                <span id="agent-role" class="text-riot font-bold tracking-[0.2em] uppercase border border-riot/30 px-3 py-1 text-sm bg-riot/10">Düellocu</span>
+                            </div>
+                            <h3 id="agent-name" class="font-teko text-7xl font-bold uppercase tracking-wide">JETT</h3>
+                            <p id="agent-bio" class="text-gray-400 leading-relaxed text-lg">
+                                Güney Koreli Jett'in çevik ve kaçamaklı dövüş tarzı, başkalarının alamayacağı riskleri almasını sağlar. Çatışmalarda etrafından dolaşarak düşmanları neyin vurduğunu bile anlamadan keser biçer.
+                            </p>
+
+                            <!-- Abilities -->
+                            <div class="pt-8">
+                                <h4 class="font-teko text-2xl text-offwhite mb-4 tracking-wider">ÖZEL YETENEKLER</h4>
+                                <div class="flex gap-4" id="ability-icons">
+                                    <!-- JS populated icons -->
+                                </div>
+                                <div class="mt-6 glass-panel p-4 rounded border-l-4 border-riot">
+                                    <h5 id="ability-name" class="font-bold text-riot uppercase mb-1">Rüzgar Gibi (E)</h5>
+                                    <p id="ability-desc" class="text-sm text-gray-300">Jett hareket ettiği yöne doğru anında atılır. Eğer hareketsizse ileri doğru atılır.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image -->
+                        <div class="w-full md:w-1/2 flex justify-center items-end h-[400px] md:h-auto">
+                            <img id="agent-image" src="https://media.valorant-api.com/agents/add6443a-41bd-e414-f6ad-e58d267f4e95/fullportrait.png" alt="Agent" class="max-h-[500px] object-contain drop-shadow-[0_0_20px_rgba(255,70,85,0.4)] transition-opacity duration-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Maps Gallery -->
+    <section id="maps" class="py-24 bg-dark1">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <h2 class="font-teko text-6xl font-bold uppercase tracking-wider">Savaş Alanları</h2>
+                    <div class="w-24 h-1 bg-riot mt-4 slanted"></div>
+                </div>
+                <p class="text-gray-400 max-w-md mt-6 md:mt-0 text-sm md:text-base">
+                    Her harita yeteneklerini sergilemen için farklı bir oyun alanı sunar. Taktiklerini buraya göre belirle.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Map Card 1 -->
+                <div class="group relative overflow-hidden rounded-lg slanted hover-glow-red transition-all duration-300 cursor-pointer h-[300px]">
+                    <img src="https://media.valorant-api.com/maps/7eaecc1b-4337-bbf6-6ab9-04b8f06b3319/splash.png" alt="Ascent" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark1 via-dark1/50 to-transparent flex flex-col justify-end p-6">
+                        <span class="text-riot font-bold text-sm tracking-widest uppercase mb-1">İtalya</span>
+                        <h3 class="font-teko text-4xl font-bold text-white">ASCENT</h3>
+                    </div>
+                </div>
+                <!-- Map Card 2 -->
+                <div class="group relative overflow-hidden rounded-lg slanted hover-glow-red transition-all duration-300 cursor-pointer h-[300px]">
+                    <img src="https://media.valorant-api.com/maps/2c9d57ec-4431-9c5e-2939-8f9ef6dd5cba/splash.png" alt="Bind" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark1 via-dark1/50 to-transparent flex flex-col justify-end p-6">
+                        <span class="text-riot font-bold text-sm tracking-widest uppercase mb-1">Fas</span>
+                        <h3 class="font-teko text-4xl font-bold text-white">BIND</h3>
+                    </div>
+                </div>
+                <!-- Map Card 3 -->
+                <div class="group relative overflow-hidden rounded-lg slanted hover-glow-red transition-all duration-300 cursor-pointer h-[300px]">
+                    <img src="https://media.valorant-api.com/maps/d960549e-485c-e861-8d71-aa9d1aed12a2/splash.png" alt="Split" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark1 via-dark1/50 to-transparent flex flex-col justify-end p-6">
+                        <span class="text-riot font-bold text-sm tracking-widest uppercase mb-1">Japonya</span>
+                        <h3 class="font-teko text-4xl font-bold text-white">SPLIT</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Arsenal & Skin Showcase -->
+    <section id="arsenal" class="py-24 bg-dark2 border-t border-white/5 relative overflow-hidden">
+        <!-- Abstract Bg -->
+        <div class="absolute inset-0 opacity-10 bg-[url('https://media.valorant-api.com/weapons/9c82e19d-4575-0200-1a81-3eacf00cf872/displayicon.png')] bg-repeat space-y-8 blur-sm pointer-events-none transform -rotate-12 scale-150"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="font-teko text-6xl font-bold uppercase tracking-wider">Cephanelik</h2>
+                <div class="w-24 h-1 bg-riot mx-auto mt-4 slanted"></div>
+            </div>
+
+            <div class="glass-panel p-8 md:p-12 rounded-xl flex flex-col md:flex-row items-center gap-12" id="weapon-showcase">
+                <!-- Weapon Details & Controls -->
+                <div class="w-full md:w-1/3 space-y-8">
+                    <div class="flex gap-4 border-b border-white/10 pb-4">
+                        <button onclick="changeWeapon('vandal')" class="weapon-tab text-2xl font-teko font-bold text-riot uppercase transition-colors">Vandal</button>
+                        <button onclick="changeWeapon('phantom')" class="weapon-tab text-2xl font-teko font-bold text-gray-500 hover:text-white uppercase transition-colors">Phantom</button>
+                        <button onclick="changeWeapon('operator')" class="weapon-tab text-2xl font-teko font-bold text-gray-500 hover:text-white uppercase transition-colors">Operator</button>
+                    </div>
+
+                    <div>
+                        <h3 id="weapon-title" class="text-3xl font-bold uppercase tracking-wider mb-2">Asil Vandal</h3>
+                        <p class="text-gray-400 text-sm">Hassas hasar ve ölümcül tek atış potansiyeli. Savaş alanının vazgeçilmezi.</p>
+                    </div>
+
+                    <div>
+                        <p class="text-xs text-gray-500 font-bold tracking-widest uppercase mb-3">Kaplamalar (Skins)</p>
+                        <div class="flex gap-3" id="skin-buttons">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weapon Image Display -->
+                <div class="w-full md:w-2/3 h-[250px] flex items-center justify-center relative">
+                    <div id="weapon-glow" class="absolute w-2/3 h-1/2 bg-yellow-500 rounded-full blur-[80px] opacity-20 transition-colors duration-500"></div>
+                    <img id="weapon-image" src="https://media.valorant-api.com/weaponskinchromas/1190bc91-4fa5-7836-8a71-6c92d5c36399/fullrender.png" alt="Weapon" class="relative z-10 max-w-full max-h-full object-contain transform hover:scale-105 transition-all duration-300 drop-shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Form Section -->
+    <section class="py-24 bg-riot relative slanted my-12 mx-4 sm:mx-auto max-w-6xl shadow-[0_0_50px_rgba(255,70,85,0.3)]">
+        <div class="absolute inset-0 bg-[url('https://media.valorant-api.com/maps/7eaecc1b-4337-bbf6-6ab9-04b8f06b3319/splash.png')] bg-cover bg-center mix-blend-overlay opacity-20 pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between px-8 md:px-16 gap-8">
+            <div class="text-dark1 w-full md:w-1/2">
+                <h2 class="font-teko text-5xl md:text-7xl font-bold uppercase leading-none">Savaşa Katıl</h2>
+                <p class="text-lg font-bold mt-2 opacity-90">Savaş biletinden, yeni ajanlardan ve güncellemelerden ilk sen haberdar ol!</p>
+            </div>
+            <div class="w-full md:w-1/2">
+                <form class="flex flex-col sm:flex-row gap-4" onsubmit="event.preventDefault();">
+                    <input type="email" placeholder="E-posta Adresin" class="flex-1 bg-dark1 text-white px-6 py-4 outline-none border-2 border-transparent focus:border-white transition-colors slanted-reverse font-bold placeholder-gray-500">
+                    <button type="submit" class="bg-dark1 text-white hover:bg-white hover:text-dark1 font-teko text-2xl font-bold px-8 py-4 transition-colors slanted uppercase tracking-wider whitespace-nowrap">
+                        Gönder
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark3 border-t border-white/10 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8 border-b border-white/10 pb-8">
+                <div class="flex gap-6">
+                    <a href="#" class="w-12 h-12 bg-dark2 rounded-full flex items-center justify-center text-offwhite hover:bg-riot hover:text-white transition-colors text-xl"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="w-12 h-12 bg-dark2 rounded-full flex items-center justify-center text-offwhite hover:bg-riot hover:text-white transition-colors text-xl"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="w-12 h-12 bg-dark2 rounded-full flex items-center justify-center text-offwhite hover:bg-riot hover:text-white transition-colors text-xl"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="w-12 h-12 bg-dark2 rounded-full flex items-center justify-center text-offwhite hover:bg-riot hover:text-white transition-colors text-xl"><i class="fab fa-twitch"></i></a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <svg class="w-8 h-8 text-white fill-current opacity-50" viewBox="0 0 100 100"><path d="M99.25 48.66V10.28c0-.59-.75-.86-1.12-.39l-41.92 52.4a.627.627 0 00.49 1.02h30.29c.82 0 1.59-.37 2.1-1.01l10.16-13.64zM11.19 10.28L.81 21.03c-.45.47-.71 1.11-.71 1.77v35.34c0 .41.43.68.8.49L52.54 32.2c.4-.2.43-.77.06-1.02L12.31 9.87c-.32-.23-.74-.23-1.12.41z"/></svg>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-sm text-gray-500 font-medium">
+                <p>&copy; 2024 Riot Games, Inc. Riot Games, VALORANT ve ilgili tüm logoları Riot Games, Inc.'nin ticari markaları veya tescilli ticari markalarıdır.</p>
+                <div class="mt-4 flex justify-center gap-6">
+                    <a href="#" class="hover:text-white transition-colors">Gizlilik Politikası</a>
+                    <a href="#" class="hover:text-white transition-colors">Hizmet Şartları</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // 1. Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // 2. Agents Data & Logic
+        const agentsData = [
+            {
+                id: 'jett',
+                name: 'JETT',
+                role: 'DÜELLOCU',
+                bio: 'Güney Koreli Jett\'in çevik ve kaçamaklı dövüş tarzı, başkalarının alamayacağı riskleri almasını sağlar. Çatışmalarda etrafından dolaşarak düşmanları neyin vurduğunu bile anlamadan keser biçer.',
+                img: 'https://media.valorant-api.com/agents/add6443a-41bd-e414-f6ad-e58d267f4e95/fullportrait.png',
+                abilities: [
+                    { key: 'C', name: 'Duman Bulutu', desc: 'Bir yüzeye çarptığında genişleyen bir bulut oluşturan bir atış yap.' },
+                    { key: 'Q', name: 'Hafifle', desc: 'Jett anında havaya sıçrar.' },
+                    { key: 'E', name: 'Rüzgar Gibi', desc: 'Jett hareket ettiği yöne doğru anında atılır.' },
+                    { key: 'X', name: 'Keskin Fırtına', desc: 'Kafadan vuruşlarda anında öldüren yüksek isabetli bıçaklar kuşan.' }
+                ]
+            },
+            {
+                id: 'reyna',
+                name: 'REYNA',
+                role: 'DÜELLOCU',
+                bio: 'Meksika\'nın kalbinden kopup gelen Reyna, teke tek çatışmalarda düşmanı ezer geçer. Aldığı her skorla daha da güçlenir.',
+                img: 'https://media.valorant-api.com/agents/a3bfb853-43b2-7238-a4f1-ad90e9e46bcc/fullportrait.png',
+                abilities: [
+                    { key: 'C', name: 'Kem Göz', desc: 'Yıkılabilir, ruhani bir göz kuşan. Gözü gören düşmanların görüşü kısıtlanır.' },
+                    { key: 'Q', name: 'Sömür', desc: 'Öldürülen düşmanların ruhlarını tüketerek can yenile.' },
+                    { key: 'E', name: 'Azlet', desc: 'Bir ruh küresi tüketerek kısa süreliğine saydam ve hasar görmez ol.' },
+                    { key: 'X', name: 'İmparatoriçe', desc: 'Atış ve kuşanma hızını büyük oranda artıran bir çılgınlığa gir.' }
+                ]
+            },
+            {
+                id: 'sage',
+                name: 'SAGE',
+                role: 'GÖZCÜ',
+                bio: 'Çinli Sage, gittiği her yerde takımı için güvenli bir liman yaratır. Ölen silah arkadaşlarını hayata döndürebilir.',
+                img: 'https://media.valorant-api.com/agents/569fdd95-4d10-43ab-ca70-79becc718b46/fullportrait.png',
+                abilities: [
+                    { key: 'C', name: 'Bariyer Küresi', desc: 'Geçilemez, katı bir duvar örer.' },
+                    { key: 'Q', name: 'Yavaşlatan Küre', desc: 'Zeminde yavaşlatan bir alan oluşturan bir küre fırlatır.' },
+                    { key: 'E', name: 'Can Küresi', desc: 'Takım arkadaşlarını veya kendini iyileştiren bir küre kullan.' },
+                    { key: 'X', name: 'Diriliş', desc: 'Ölen bir silah arkadaşını hedef alarak onu tam canla hayata döndür.' }
+                ]
+            },
+            {
+                id: 'sova',
+                name: 'SOVA',
+                role: 'ÖNCÜ',
+                bio: 'Rusya\'nın uçsuz bucaksız tundralarından gelen Sova, düşmanlarını acımasız bir verimlilikle bulur, izler ve yok eder.',
+                img: 'https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/fullportrait.png',
+                abilities: [
+                    { key: 'C', name: 'Baykuş Dron', desc: 'Bir dron kuşan ve kontrol ederek düşmanları işaretle.' },
+                    { key: 'Q', name: 'Şok Oku', desc: 'Çarptığı yerde patlayarak hasar veren bir ok fırlat.' },
+                    { key: 'E', name: 'Keşif Oku', desc: 'Görüş menzilindeki düşmanların yerini açığa çıkaran bir ok at.' },
+                    { key: 'X', name: 'Avcının Hiddeti', desc: 'Duvarları delen ve hasar veren üç uzun menzilli enerji oku fırlat.' }
+                ]
+            }
+        ];
+
+        let currentAgent = agentsData[0];
+
+        function initAgents() {
+            const listEl = document.getElementById('agent-list');
+            listEl.innerHTML = '';
+            
+            agentsData.forEach((agent, index) => {
+                const btn = document.createElement('button');
+                btn.className = `text-left px-6 py-4 font-teko text-3xl font-bold uppercase transition-all duration-300 border-l-4 ${agent.id === currentAgent.id ? 'border-riot text-white bg-white/5' : 'border-transparent text-gray-500 hover:text-white hover:bg-white/5'}`;
+                btn.innerText = agent.name;
+                btn.onclick = () => selectAgent(agent, btn);
+                listEl.appendChild(btn);
+            });
+            
+            updateAgentDisplay();
+        }
+
+        function selectAgent(agent, btnElement) {
+            currentAgent = agent;
+            
+            // Update Active State on Sidebar
+            const buttons = document.getElementById('agent-list').children;
+            for(let btn of buttons) {
+                btn.className = 'text-left px-6 py-4 font-teko text-3xl font-bold uppercase transition-all duration-300 border-l-4 border-transparent text-gray-500 hover:text-white hover:bg-white/5';
+            }
+            btnElement.className = 'text-left px-6 py-4 font-teko text-3xl font-bold uppercase transition-all duration-300 border-l-4 border-riot text-white bg-white/5';
+
+            // Fade Image out/in
+            const imgEl = document.getElementById('agent-image');
+            imgEl.style.opacity = 0;
+            setTimeout(() => {
+                updateAgentDisplay();
+                imgEl.style.opacity = 1;
+            }, 300);
+        }
+
+        function updateAgentDisplay() {
+            document.getElementById('agent-name').innerText = currentAgent.name;
+            document.getElementById('agent-role').innerText = currentAgent.role;
+            document.getElementById('agent-bio').innerText = currentAgent.bio;
+            document.getElementById('agent-image').src = currentAgent.img;
+            document.getElementById('agent-bg-text').innerText = currentAgent.role;
+
+            const abilitiesEl = document.getElementById('ability-icons');
+            abilitiesEl.innerHTML = '';
+            
+            currentAgent.abilities.forEach((ability, index) => {
+                const iconBox = document.createElement('div');
+                iconBox.className = `ability-icon w-14 h-14 bg-dark3 border border-white/20 flex items-center justify-center font-teko text-xl font-bold cursor-pointer text-white ${index === 0 ? 'active' : ''}`;
+                iconBox.innerText = ability.key;
+                
+                iconBox.onmouseenter = () => updateAbilityDesc(ability, iconBox);
+                // Mobile support
+                iconBox.onclick = () => updateAbilityDesc(ability, iconBox);
+                
+                abilitiesEl.appendChild(iconBox);
+            });
+            
+            // Set first ability as default
+            updateAbilityDesc(currentAgent.abilities[0], abilitiesEl.firstChild, false);
+        }
+
+        function updateAbilityDesc(ability, element, removeActive = true) {
+            document.getElementById('ability-name').innerText = `${ability.name} (${ability.key})`;
+            document.getElementById('ability-desc').innerText = ability.desc;
+            
+            if(removeActive) {
+                const icons = document.getElementById('ability-icons').children;
+                for(let icon of icons) { icon.classList.remove('active'); }
+                element.classList.add('active');
+            }
+        }
+
+
+        // 3. Weapons & Skins Logic
+        const weaponsData = {
+            vandal: {
+                skins: [
+                    { id: 'asil', name: 'Asil Vandal', img: 'https://media.valorant-api.com/weaponskinchromas/1190bc91-4fa5-7836-8a71-6c92d5c36399/fullrender.png', color: '#FCD34D' },
+                    { id: 'yagmacı', name: 'Yağmacı Vandal', img: 'https://media.valorant-api.com/weaponskinchromas/4f2d7712-4217-19d4-b976-1bba29048f02/fullrender.png', color: '#8B5CF6' },
+                    { id: 'ejder', name: 'Ejder Ateşi Vandal', img: 'https://media.valorant-api.com/weaponskinchromas/c658d511-4770-4fc7-320c-cfa1cf254ba2/fullrender.png', color: '#EF4444' }
+                ]
+            },
+            phantom: {
+                skins: [
+                    { id: 'oni', name: 'Oni Phantom', img: 'https://media.valorant-api.com/weaponskinchromas/1fc1ea6b-4e6f-607f-7126-e1af5a3ccbc5/fullrender.png', color: '#10B981' },
+                    { id: 'delipop', name: 'Delipop Phantom', img: 'https://media.valorant-api.com/weaponskinchromas/b4f9996b-4bd4-5775-8025-b485507f3ed6/fullrender.png', color: '#EC4899' }
+                ]
+            },
+            operator: {
+                skins: [
+                    { id: 'koken', name: 'Köken Operator', img: 'https://media.valorant-api.com/weaponskinchromas/0989b5c2-47da-992a-8bf8-d5a2d6b7b25e/fullrender.png', color: '#F3F4F6' },
+                    { id: 'yagmaci_op', name: 'Yağmacı Operator', img: 'https://media.valorant-api.com/weaponskinchromas/a37db732-47da-e2cf-a87f-e28325dd61ed/fullrender.png', color: '#8B5CF6' }
+                ]
+            }
+        };
+
+        let activeWeapon = 'vandal';
+
+        function changeWeapon(weaponId) {
+            activeWeapon = weaponId;
+            
+            // Update tabs UI
+            const tabs = document.querySelectorAll('.weapon-tab');
+            tabs.forEach(tab => {
+                if(tab.innerText.toLowerCase() === weaponId) {
+                    tab.classList.remove('text-gray-500');
+                    tab.classList.add('text-riot');
+                } else {
+                    tab.classList.add('text-gray-500');
+                    tab.classList.remove('text-riot');
+                }
+            });
+
+            renderSkins();
+        }
+
+        function renderSkins() {
+            const container = document.getElementById('skin-buttons');
+            container.innerHTML = '';
+            
+            const skins = weaponsData[activeWeapon].skins;
+            
+            skins.forEach((skin, index) => {
+                const btn = document.createElement('button');
+                btn.className = `w-6 h-6 rounded-full border-2 transition-transform hover:scale-125 ${index === 0 ? 'border-white scale-110' : 'border-transparent'}`;
+                btn.style.backgroundColor = skin.color;
+                
+                btn.onclick = () => selectSkin(skin, btn);
+                container.appendChild(btn);
+            });
+            
+            // Set default skin
+            selectSkin(skins[0], container.firstChild, false);
+        }
+
+        function selectSkin(skin, btnElement, removeActive = true) {
+            document.getElementById('weapon-title').innerText = skin.name;
+            
+            const img = document.getElementById('weapon-image');
+            img.style.opacity = 0;
+            setTimeout(() => {
+                img.src = skin.img;
+                img.style.opacity = 1;
+            }, 200);
+
+            // Change Glow Color
+            document.getElementById('weapon-glow').style.backgroundColor = skin.color;
+
+            if(removeActive) {
+                const btns = document.getElementById('skin-buttons').children;
+                for(let btn of btns) {
+                    btn.classList.remove('border-white', 'scale-110');
+                    btn.classList.add('border-transparent');
+                }
+                btnElement.classList.add('border-white', 'scale-110');
+                btnElement.classList.remove('border-transparent');
+            }
+        }
+
+        // Initialize Everything on Load
+        window.onload = () => {
+            initAgents();
+            renderSkins();
+        };
+
+    </script>
+</body>
+</html>
