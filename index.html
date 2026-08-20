@@ -4,28 +4,623 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TürkTube</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <h1>TürkTube</h1>
+  <!-- ÜST BAR -->
+  <header class="topbar">
 
-  <button>Google ile Giriş Yap</button>
+    <button class="icon-btn menu-btn" id="menuBtn">
+      ☰
+    </button>
 
-  <h2>Video Yükle</h2>
+    <a href="#" class="logo">
+      <span class="logo-icon">▶</span>
+      TürkTube
+      <small>TR</small>
+    </a>
 
-  <input type="file" accept="video/mp4,video/webm,video/quicktime">
+    <div class="search-area">
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Ara"
+      >
 
-  <input type="text" placeholder="Video başlığı">
-  <textarea placeholder="Video açıklaması"></textarea>
-  <input type="text" placeholder="Etiketler">
+      <button id="searchBtn">
+        🔍
+      </button>
 
-  <button>Video Oluştur</button>
+      <button class="mic-btn">
+        🎙
+      </button>
+    </div>
 
-  <h2>Videolar</h2>
+    <div class="top-actions">
 
-  <video width="640" controls>
-    <source src="" type="video/mp4">
-  </video>
+      <button class="create-btn" id="createBtn">
+        ＋ Oluştur
+      </button>
+
+      <button class="top-icon">
+        🔔
+      </button>
+
+      <button class="avatar">
+        B
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- SOL MENÜ -->
+  <aside class="sidebar" id="sidebar">
+
+    <nav>
+
+      <a class="side-item active" href="#">
+        <span>⌂</span>
+        Ana Sayfa
+      </a>
+
+      <a class="side-item" href="#">
+        <span>♢</span>
+        Shorts
+      </a>
+
+      <div class="separator"></div>
+
+      <div class="side-title">
+        Abonelikler
+        <span>›</span>
+      </div>
+
+      <a class="side-item channel-item" href="#">
+        <span class="channel-avatar purple">B</span>
+        BilalEfendi
+      </a>
+
+      <a class="side-item channel-item" href="#">
+        <span class="channel-avatar">C</span>
+        Cartoon Network
+      </a>
+
+      <a class="side-item channel-item" href="#">
+        <span class="channel-avatar blue">G</span>
+        GLITCH TÜRKÇE
+      </a>
+
+      <a class="side-item channel-item" href="#">
+        <span class="channel-avatar red">D</span>
+        Herkes İçin Dua
+      </a>
+
+      <a class="side-item channel-item" href="#">
+        <span class="channel-avatar green">K</span>
+        Karoxen
+      </a>
+
+      <a class="side-item channel-item" href="#">
+        <span class="channel-avatar orange">M</span>
+        MysteriousSakat
+      </a>
+
+      <a class="side-item more-item" href="#">
+        <span>⌄</span>
+        Daha fazla göster
+      </a>
+
+      <div class="separator"></div>
+
+      <div class="side-title">
+        Siz
+        <span>›</span>
+      </div>
+
+      <a class="side-item" href="#">
+        <span>◉</span>
+        Kanalınız
+      </a>
+
+      <a class="side-item" href="#">
+        <span>◷</span>
+        Geçmiş
+      </a>
+
+      <a class="side-item" href="#">
+        <span>☷</span>
+        Oynatma listeleri
+      </a>
+
+      <a class="side-item" href="#">
+        <span>◷</span>
+        Daha sonra izle
+      </a>
+
+      <a class="side-item" href="#">
+        <span>♡</span>
+        Beğendiğiniz videolar
+      </a>
+
+      <a class="side-item" href="#">
+        <span>▣</span>
+        Videolarınız
+      </a>
+
+      <a class="side-item" href="#">
+        <span>↓</span>
+        İndirilenler
+      </a>
+
+      <div class="separator"></div>
+
+      <div class="more-youtube">
+        TürkTube'dan daha fazla...
+      </div>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- ANA İÇERİK -->
+  <main class="content">
+
+    <!-- KATEGORİLER -->
+    <div class="chips">
+
+      <button class="chip active">Tümü</button>
+      <button class="chip">Oyun</button>
+      <button class="chip">Minecraft modları</button>
+      <button class="chip">Animasyon</button>
+      <button class="chip">Minecraft</button>
+      <button class="chip">Son yüklenenler</button>
+      <button class="chip">İzlenenler</button>
+      <button class="chip">Yeni öneriler</button>
+
+    </div>
+
+
+    <!-- ÖNE ÇIKANLAR -->
+    <section class="featured">
+
+      <article class="featured-card">
+        <div class="thumbnail gradient-1">
+          <span class="big-text">TÜRK<br>TUBE</span>
+          <span class="play-circle">▶</span>
+        </div>
+
+        <div class="video-info">
+
+          <div class="small-avatar orange">
+            T
+          </div>
+
+          <div>
+            <h3>
+              TürkTube'a hoş geldin! Platform nasıl çalışıyor?
+            </h3>
+
+            <p>
+              TürkTube
+            </p>
+
+            <p>
+              125 B görüntüleme • 2 gün önce
+            </p>
+          </div>
+
+          <button class="dots">⋮</button>
+
+        </div>
+      </article>
+
+
+      <article class="featured-card">
+
+        <div class="thumbnail gradient-2">
+          <span class="big-text yellow">
+            SIFIRDAN<br>OYUN YAPIYORUM
+          </span>
+
+          <span class="play-circle">▶</span>
+        </div>
+
+        <div class="video-info">
+
+          <div class="small-avatar blue">
+            C
+          </div>
+
+          <div>
+
+            <h3>
+              SIFIRDAN OYUN YAPIYORUM...
+            </h3>
+
+            <p>
+              Can Demir
+            </p>
+
+            <p>
+              6 B görüntüleme • 55 dakika önce
+            </p>
+
+          </div>
+
+          <button class="dots">⋮</button>
+
+        </div>
+
+      </article>
+
+
+      <article class="featured-card">
+
+        <div class="thumbnail gradient-3">
+
+          <span class="big-text">
+            DIGITAL<br>CIRCUS
+          </span>
+
+          <span class="duration">
+            2:54
+          </span>
+
+        </div>
+
+        <div class="video-info">
+
+          <div class="small-avatar green">
+            A
+          </div>
+
+          <div>
+
+            <h3>
+              DIGITAL CIRCUS - Isn't She Lovely
+            </h3>
+
+            <p>
+              AzterVerse
+            </p>
+
+            <p>
+              345 B görüntüleme • 1 ay önce
+            </p>
+
+          </div>
+
+          <button class="dots">⋮</button>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- SHORTS -->
+    <section class="shorts-section">
+
+      <div class="section-heading">
+
+        <div>
+          <span class="shorts-icon">▶</span>
+          <strong>Shorts</strong>
+        </div>
+
+        <button>⋮</button>
+
+      </div>
+
+
+      <div class="shorts-grid">
+
+        <article class="short-card">
+          <div class="short-thumb short-1">
+            <span>Misafirliğe<br>adımımızı atar atmaz<br>Wi-Fi şifresini<br>istemeye giderken</span>
+          </div>
+
+          <h3>
+            Misafirlikte Wi-Fi istemeye gidince...
+          </h3>
+
+          <p>2,4 Mn görüntüleme</p>
+        </article>
+
+
+        <article class="short-card">
+
+          <div class="short-thumb short-2">
+            <span class="minecraft-text">
+              MINECRAFT
+            </span>
+          </div>
+
+          <h3>
+            Minecraft'ta bunu biliyor muydun?
+          </h3>
+
+          <p>1,8 Mn görüntüleme</p>
+
+        </article>
+
+
+        <article class="short-card">
+
+          <div class="short-thumb short-3">
+            <span>
+              Şimdiki çocuklar
+              manifest dinlerken
+            </span>
+          </div>
+
+          <h3>
+            Biz küçükken dinlediğimiz şarkı:
+          </h3>
+
+          <p>980 B görüntüleme</p>
+
+        </article>
+
+
+        <article class="short-card">
+
+          <div class="short-thumb short-4">
+            <span>
+              PETER
+            </span>
+          </div>
+
+          <h3>
+            Bu sahneyi hatırlayan var mı?
+          </h3>
+
+          <p>742 B görüntüleme</p>
+
+        </article>
+
+
+        <article class="short-card">
+
+          <div class="short-thumb short-5">
+            <span>
+              BIGGEST<br>MISTAKE?
+            </span>
+          </div>
+
+          <h3>
+            Oyundaki en büyük hata
+          </h3>
+
+          <p>530 B görüntüleme</p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- VİDEO LİSTESİ -->
+    <section class="video-section">
+
+      <div class="section-heading">
+        <strong>Önerilen videolar</strong>
+        <button>⋮</button>
+      </div>
+
+
+      <div class="video-grid">
+
+        <article class="video-card">
+
+          <div class="thumbnail video-1">
+            <span class="duration">12:42</span>
+          </div>
+
+          <div class="video-row">
+
+            <div class="small-avatar purple">
+              B
+            </div>
+
+            <div class="video-details">
+
+              <h3>
+                Minecraft'ta 100 Gün Hayatta Kalmak!
+              </h3>
+
+              <p>
+                BilalEfendi
+              </p>
+
+              <p>
+                245 B görüntüleme • 3 gün önce
+              </p>
+
+            </div>
+
+            <button class="dots">⋮</button>
+
+          </div>
+
+        </article>
+
+
+        <article class="video-card">
+
+          <div class="thumbnail video-2">
+            <span class="duration">21:08</span>
+          </div>
+
+          <div class="video-row">
+
+            <div class="small-avatar blue">
+              K
+            </div>
+
+            <div class="video-details">
+
+              <h3>
+                Bu Minecraft Modu Gerçekten Çok İyi
+              </h3>
+
+              <p>
+                Karoxen
+              </p>
+
+              <p>
+                98 B görüntüleme • 1 hafta önce
+              </p>
+
+            </div>
+
+            <button class="dots">⋮</button>
+
+          </div>
+
+        </article>
+
+
+        <article class="video-card">
+
+          <div class="thumbnail video-3">
+            <span class="duration">8:15</span>
+          </div>
+
+          <div class="video-row">
+
+            <div class="small-avatar red">
+              G
+            </div>
+
+            <div class="video-details">
+
+              <h3>
+                TürkTube'da İlk Videomu Yüklüyorum
+              </h3>
+
+              <p>
+                GLITCH TÜRKÇE
+              </p>
+
+              <p>
+                76 B görüntüleme • 5 gün önce
+              </p>
+
+            </div>
+
+            <button class="dots">⋮</button>
+
+          </div>
+
+        </article>
+
+
+        <article class="video-card">
+
+          <div class="thumbnail video-4">
+            <span class="duration">15:31</span>
+          </div>
+
+          <div class="video-row">
+
+            <div class="small-avatar orange">
+              M
+            </div>
+
+            <div class="video-details">
+
+              <h3>
+                En Komik Minecraft Anlarım
+              </h3>
+
+              <p>
+                MysteriousSakat
+              </p>
+
+              <p>
+                431 B görüntüleme • 2 hafta önce
+              </p>
+
+            </div>
+
+            <button class="dots">⋮</button>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- OLUŞTUR MENÜSÜ -->
+  <div class="modal-bg" id="modalBg">
+
+    <div class="modal">
+
+      <button class="modal-close" id="closeModal">
+        ×
+      </button>
+
+      <h2>Video oluştur</h2>
+
+      <div class="upload-area" id="uploadArea">
+
+        <div class="upload-icon">
+          ↑
+        </div>
+
+        <h3>Videonu yükle</h3>
+
+        <p>
+          MP4, WebM veya MOV dosyanı sürükleyip bırak
+        </p>
+
+        <label class="select-file">
+          Dosya seç
+          <input type="file" id="videoFile" accept="video/*">
+        </label>
+
+      </div>
+
+      <input
+        class="modal-input"
+        type="text"
+        placeholder="Video başlığı"
+      >
+
+      <textarea
+        class="modal-textarea"
+        placeholder="Açıklama"
+      ></textarea>
+
+      <input
+        class="modal-input"
+        type="text"
+        placeholder="Etiketler"
+      >
+
+      <button class="publish-btn">
+        Videoyu yayınla
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script src="script.js"></script>
 
 </body>
 </html>
