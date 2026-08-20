@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  avatar    String?
+  createdAt DateTime @default(now())
+
+  channel Channel?
+}
+
+model Channel {
+  id          String  @id @default(cuid())
+  handle      String  @unique
+  name        String
+  description String?
+  avatar      String?
+  banner      String?
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  videos Video[]
+
+  subscribers Subscription[] @relation("ChannelSubscribers")
+}
+
+model Video {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  thumbnail   String?
+  videoUrl    String?
+  hlsUrl      String?
+  visibility  String   @default("PUBLIC")
+  views       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  channelId String
+  channel   Channel @relation(fields: [channelId], references: [id])
+
+  comments Comment[]
+  likes    Like[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  videoId String
+  video   Video @relation(fields: [videoId], references: [id])
+
+  userId String
+}
+
+model Like {
+  id      String @id @default(cuid())
+  type    String
+
+  videoId String
+  video   Video @relation(fields: [videoId], references: [id])
+
+  userId String
+
+  @@unique([videoId, userId])
+}
+
+model Subscription {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  channelId String
+  channel   Channel @relation("ChannelSubscribers", fields: [channelId], references: [id])
+
+  userId String
+
+  @@unique([channelId, userId])
+}
